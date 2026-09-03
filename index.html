@@ -1,85 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ApnaCart | Premium Gifts</title>
-<style>
-:root{--bg:#0b0b0d;--card:#151519;--gold:#d4af37;--text:#f7f2e8;--muted:#aaa39a}
-*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{position:sticky;top:0;background:#0b0b0df2;backdrop-filter:blur(10px);border-bottom:1px solid #2a2927;padding:15px 6%;display:flex;align-items:center;justify-content:space-between;z-index:5}
-.logo{font-size:26px;font-weight:800}.logo span{color:var(--gold)}
-nav a{color:var(--text);text-decoration:none;margin:0 10px;font-size:14px}
-.cart{border:1px solid var(--gold);padding:9px 14px;border-radius:25px;color:var(--gold)}
-.hero{min-height:520px;padding:80px 8%;display:flex;align-items:center;background:radial-gradient(circle at 75% 35%,#3a2d10 0,#15120d 25%,#0b0b0d 60%)}
-.hero h1{font-size:clamp(42px,7vw,78px);margin:0;max-width:720px}.hero h1 span{color:var(--gold)}
-.hero p{color:var(--muted);font-size:18px;max-width:560px;line-height:1.6}
-.btn{display:inline-block;background:var(--gold);color:#111;padding:14px 24px;border-radius:6px;text-decoration:none;font-weight:bold;margin-top:15px}
-section{padding:55px 7%}h2{text-align:center;font-size:32px;margin:0 0 12px} .sub{text-align:center;color:var(--muted);margin-bottom:30px}
-.categories,.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
-.category,.product{background:var(--card);border:1px solid #28272b;border-radius:14px;padding:18px;transition:.2s}.category:hover,.product:hover{transform:translateY(-4px);border-color:var(--gold)}
-.category{height:150px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:18px}.emoji{font-size:44px;margin-bottom:10px}
-.product-img{height:170px;border-radius:10px;background:linear-gradient(135deg,#2a2113,#111);display:flex;align-items:center;justify-content:center;font-size:72px}
-.product h3{margin:15px 0 8px}.price{color:var(--gold);font-weight:bold;font-size:19px}.old{color:#777;text-decoration:line-through;font-size:14px;margin-left:8px}
-.product button{width:100%;margin-top:14px;padding:11px;border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:6px;font-weight:bold;cursor:pointer}
-.product button:hover{background:var(--gold);color:#111}
-.banner{margin:0 7%;padding:35px;border:1px solid #4b3c18;border-radius:16px;background:linear-gradient(90deg,#17130b,#2c220b);text-align:center}
-footer{text-align:center;padding:35px;color:var(--muted);border-top:1px solid #242328;margin-top:40px}
-#cartPanel{position:fixed;right:20px;bottom:20px;background:#1b1b20;border:1px solid var(--gold);border-radius:12px;padding:16px;display:none;z-index:10;min-width:230px}
-@media(max-width:650px){nav{display:none}.hero{min-height:460px;padding:60px 7%}section{padding:45px 5%}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApnaCart - Modern E-Commerce Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-<header>
-  <div class="logo">Apna<span>Cart</span> 🎁</div>
-  <nav><a href="#home">Home</a><a href="#categories">Categories</a><a href="#products">Gifts</a></nav>
-  <div class="cart">🛒 Cart: <span id="count">0</span></div>
-</header>
+<body class="bg-gray-50 font-sans">
 
-<div class="hero" id="home">
-  <div>
-    <div style="color:#d4af37;letter-spacing:3px;font-size:13px">PREMIUM GIFT COLLECTION</div>
-    <h1>Make Every Moment <span>Unforgettable.</span></h1>
-    <p>Beautiful, meaningful and premium gifts for birthdays, anniversaries, love and every special occasion.</p>
-    <a class="btn" href="#products">Shop Gifts →</a>
-  </div>
-</div>
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-600"><i class="fa-solid fa-cart-shopping mr-2"></i>ApnaCart</h1>
+            
+            <div class="hidden md:flex flex-1 max-w-md mx-8">
+                <input type="text" id="searchInput" placeholder="Products search karein..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
 
-<section id="categories">
-<h2>Shop by Occasion</h2><p class="sub">Find the perfect gift for every special moment</p>
-<div class="categories">
-<div class="category"><div class="emoji">🎂</div>Birthday Gifts</div>
-<div class="category"><div class="emoji">❤️</div>Love & Couple Gifts</div>
-<div class="category"><div class="emoji">💍</div>Anniversary Gifts</div>
-<div class="category"><div class="emoji">🎀</div>Surprise Gift Boxes</div>
-</div>
-</section>
+            <button onclick="toggleCart()" class="relative bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Cart</span>
+                <span id="cartCount" class="bg-red-500 text-xs px-2 py-0.5 rounded-full">0</span>
+            </button>
+        </div>
+        <!-- Mobile Search Bar -->
+        <div class="px-4 pb-4 md:hidden">
+            <input type="text" id="mobileSearchInput" placeholder="Products search karein..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+    </header>
 
-<div class="banner"><h2>✨ Special Offer</h2><p>Get premium gifts for your loved ones with exclusive deals.</p></div>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Categories -->
+        <div class="flex gap-2 overflow-x-auto pb-4 mb-6">
+            <button onclick="filterCategory('All')" class="category-btn bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">Sabhi</button>
+            <button onclick="filterCategory('Lighting')" class="category-btn bg-white text-gray-700 border px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">Lighting</button>
+            <button onclick="filterCategory('Decor')" class="category-btn bg-white text-gray-700 border px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">Home Decor</button>
+            <button onclick="filterCategory('Electronics')" class="category-btn bg-white text-gray-700 border px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">Electronics</button>
+        </div>
 
-<section id="products">
-<h2>Featured Gifts</h2><p class="sub">Our most loved premium gift items</p>
-<div class="products">
-<div class="product"><div class="product-img">🧸</div><h3>Luxury Teddy Gift Box</h3><div class="price">₹999 <span class="old">₹1,499</span></div><button onclick="addCart('Luxury Teddy Gift Box')">Add to Cart</button></div>
-<div class="product"><div class="product-img">🌹</div><h3>Rose Surprise Box</h3><div class="price">₹799 <span class="old">₹1,199</span></div><button onclick="addCart('Rose Surprise Box')">Add to Cart</button></div>
-<div class="product"><div class="product-img">⌚</div><h3>Premium Gift Combo</h3><div class="price">₹1,499 <span class="old">₹2,199</span></div><button onclick="addCart('Premium Gift Combo')">Add to Cart</button></div>
-<div class="product"><div class="product-img">💝</div><h3>Couple Memory Gift</h3><div class="price">₹1,299 <span class="old">₹1,899</span></div><button onclick="addCart('Couple Memory Gift')">Add to Cart</button></div>
-</div>
-</section>
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamic Products will be injected here -->
+        </div>
+    </main>
 
-<footer><div class="logo">Apna<span>Cart</span> 🎁</div><p>Premium Gifts for Every Special Moment</p><p>© 2026 ApnaCart. All rights reserved.</p></footer>
+    <!-- Slide-over Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full flex flex-col p-6 shadow-xl">
+            <div class="flex justify-between items-center border-b pb-4">
+                apne Cart <h2 class="text-xl font-bold">Aapka Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-black"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div id="cartItems" class="flex-1 overflow-y-auto py-4 space-y-4">
+                <!-- Cart items will load here -->
+            </div>
 
-<div id="cartPanel"><b>🛒 Cart Updated!</b><p id="lastItem" style="color:#ccc;margin-bottom:0"></p></div>
-<script>
-let count=0;
-function addCart(item){
-  count++;
-  document.getElementById('count').textContent=count;
-  document.getElementById('lastItem').textContent=item+' added to cart';
-  const panel=document.getElementById('cartPanel');
-  panel.style.display='block';
-  setTimeout(()=>panel.style.display='none',2500);
-}
-</script>
+            <div class="border-t pt-4">
+                <div class="flex justify-between text-lg font-bold mb-4">
+                    <span>Total:</span>
+                    <span id="cartTotal">₹0</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">Checkout Karein</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Antique Brass Light", price: 2499, category: "Lighting", image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400" },
+            { id: 2, name: "Modern Pendant Light", price: 1899, category: "Lighting", image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400" },
+            { id: 3, name: "Brass Table Lamp", price: 3199, category: "Lighting", image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400" },
+            { id: 4, name: "Decorative Wall Clock", price: 999, category: "Decor", image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400" },
+            { id: 5, name: "Smart LED Bulb", price: 499, category: "Electronics", image: "https://images.unsplash.com/photo-1550985616-11610c812127?w=400" },
+        ];
+
+        let cart = [];
+
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = items.map(p => `
+                <div class="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <span class="text-xs text-indigo-600 font-semibold uppercase">${p.category}</span>
+                        <h3 class="font-bold text-lg text-gray-800 mt-1">${p.name}</h3>
+                        <p class="text-gray-600 font-medium mt-2">₹${p.price}</p>
+                        <button onclick="addToCart(${p.id})" class="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const cartItem = cart.find(item => item.id === productId);
+            if (cartItem) {
+                cartItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.innerText = totalCount;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<p class="text-gray-500 text-center py-8">Aapka cart khali hai.</p>`;
+                cartTotal.innerText = '₹0';
+                return;
+            }
+
+            let total = 0;
+            cartItems.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div>
+                            <h4 class="font-semibold text-sm">${item.name}</h4>
+                            <p class="text-xs text-gray-500">₹${item.price} x ${item.quantity}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="bg-gray-200 px-2 py-1 rounded text-sm">-</button>
+                            <span class="text-sm font-bold">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="bg-gray-200 px-2 py-1 rounded text-sm">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            cartTotal.innerText = `₹${total}`;
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function filterCategory(category) {
+            if (category === 'All') {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === category));
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Pehle cart mein kuch add karein!');
+                return;
+            }
+            alert('Order Successfully Placed! Thank you for shopping with ApnaCart.');
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        // Search Handlers
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(term)));
+        });
+        document.getElementById('mobileSearchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(term)));
+        });
+
+        // Initial render
+        renderProducts(products);
+    </script>
 </body>
 </html>
