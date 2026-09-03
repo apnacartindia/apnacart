@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApnaCart | Premium Gifts</title>
+<style>
+:root{--bg:#0b0b0d;--card:#151519;--gold:#d4af37;--text:#f7f2e8;--muted:#aaa39a}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;background:#0b0b0df2;backdrop-filter:blur(10px);border-bottom:1px solid #2a2927;padding:15px 6%;display:flex;align-items:center;justify-content:space-between;z-index:5}
+.logo{font-size:26px;font-weight:800}.logo span{color:var(--gold)}
+nav a{color:var(--text);text-decoration:none;margin:0 10px;font-size:14px}
+.cart{border:1px solid var(--gold);padding:9px 14px;border-radius:25px;color:var(--gold)}
+.hero{min-height:520px;padding:80px 8%;display:flex;align-items:center;background:radial-gradient(circle at 75% 35%,#3a2d10 0,#15120d 25%,#0b0b0d 60%)}
+.hero h1{font-size:clamp(42px,7vw,78px);margin:0;max-width:720px}.hero h1 span{color:var(--gold)}
+.hero p{color:var(--muted);font-size:18px;max-width:560px;line-height:1.6}
+.btn{display:inline-block;background:var(--gold);color:#111;padding:14px 24px;border-radius:6px;text-decoration:none;font-weight:bold;margin-top:15px}
+section{padding:55px 7%}h2{text-align:center;font-size:32px;margin:0 0 12px} .sub{text-align:center;color:var(--muted);margin-bottom:30px}
+.categories,.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+.category,.product{background:var(--card);border:1px solid #28272b;border-radius:14px;padding:18px;transition:.2s}.category:hover,.product:hover{transform:translateY(-4px);border-color:var(--gold)}
+.category{height:150px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:18px}.emoji{font-size:44px;margin-bottom:10px}
+.product-img{height:170px;border-radius:10px;background:linear-gradient(135deg,#2a2113,#111);display:flex;align-items:center;justify-content:center;font-size:72px}
+.product h3{margin:15px 0 8px}.price{color:var(--gold);font-weight:bold;font-size:19px}.old{color:#777;text-decoration:line-through;font-size:14px;margin-left:8px}
+.product button{width:100%;margin-top:14px;padding:11px;border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:6px;font-weight:bold;cursor:pointer}
+.product button:hover{background:var(--gold);color:#111}
+.banner{margin:0 7%;padding:35px;border:1px solid #4b3c18;border-radius:16px;background:linear-gradient(90deg,#17130b,#2c220b);text-align:center}
+footer{text-align:center;padding:35px;color:var(--muted);border-top:1px solid #242328;margin-top:40px}
+#cartPanel{position:fixed;right:20px;bottom:20px;background:#1b1b20;border:1px solid var(--gold);border-radius:12px;padding:16px;display:none;z-index:10;min-width:230px}
+@media(max-width:650px){nav{display:none}.hero{min-height:460px;padding:60px 7%}section{padding:45px 5%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Apna<span>Cart</span> 🎁</div>
+  <nav><a href="#home">Home</a><a href="#categories">Categories</a><a href="#products">Gifts</a></nav>
+  <div class="cart">🛒 Cart: <span id="count">0</span></div>
+</header>
+
+<div class="hero" id="home">
+  <div>
+    <div style="color:#d4af37;letter-spacing:3px;font-size:13px">PREMIUM GIFT COLLECTION</div>
+    <h1>Make Every Moment <span>Unforgettable.</span></h1>
+    <p>Beautiful, meaningful and premium gifts for birthdays, anniversaries, love and every special occasion.</p>
+    <a class="btn" href="#products">Shop Gifts →</a>
+  </div>
+</div>
+
+<section id="categories">
+<h2>Shop by Occasion</h2><p class="sub">Find the perfect gift for every special moment</p>
+<div class="categories">
+<div class="category"><div class="emoji">🎂</div>Birthday Gifts</div>
+<div class="category"><div class="emoji">❤️</div>Love & Couple Gifts</div>
+<div class="category"><div class="emoji">💍</div>Anniversary Gifts</div>
+<div class="category"><div class="emoji">🎀</div>Surprise Gift Boxes</div>
+</div>
+</section>
+
+<div class="banner"><h2>✨ Special Offer</h2><p>Get premium gifts for your loved ones with exclusive deals.</p></div>
+
+<section id="products">
+<h2>Featured Gifts</h2><p class="sub">Our most loved premium gift items</p>
+<div class="products">
+<div class="product"><div class="product-img">🧸</div><h3>Luxury Teddy Gift Box</h3><div class="price">₹999 <span class="old">₹1,499</span></div><button onclick="addCart('Luxury Teddy Gift Box')">Add to Cart</button></div>
+<div class="product"><div class="product-img">🌹</div><h3>Rose Surprise Box</h3><div class="price">₹799 <span class="old">₹1,199</span></div><button onclick="addCart('Rose Surprise Box')">Add to Cart</button></div>
+<div class="product"><div class="product-img">⌚</div><h3>Premium Gift Combo</h3><div class="price">₹1,499 <span class="old">₹2,199</span></div><button onclick="addCart('Premium Gift Combo')">Add to Cart</button></div>
+<div class="product"><div class="product-img">💝</div><h3>Couple Memory Gift</h3><div class="price">₹1,299 <span class="old">₹1,899</span></div><button onclick="addCart('Couple Memory Gift')">Add to Cart</button></div>
+</div>
+</section>
+
+<footer><div class="logo">Apna<span>Cart</span> 🎁</div><p>Premium Gifts for Every Special Moment</p><p>© 2026 ApnaCart. All rights reserved.</p></footer>
+
+<div id="cartPanel"><b>🛒 Cart Updated!</b><p id="lastItem" style="color:#ccc;margin-bottom:0"></p></div>
+<script>
+let count=0;
+function addCart(item){
+  count++;
+  document.getElementById('count').textContent=count;
+  document.getElementById('lastItem').textContent=item+' added to cart';
+  const panel=document.getElementById('cartPanel');
+  panel.style.display='block';
+  setTimeout(()=>panel.style.display='none',2500);
+}
+</script>
+</body>
+</html>
