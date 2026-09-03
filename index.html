@@ -70,25 +70,168 @@
 
     <script>
         const products = [
-            { id: 1, name: "Antique Brass Light", price: 2499, category: "Lighting", image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400" },
-            { id: 2, name: "Modern Pendant Light", price: 1899, category: "Lighting", image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=400" },
-            { id: 3, name: "Brass Table Lamp", price: 3199, category: "Lighting", image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=400" },
-            { id: 4, name: "Decorative Wall Clock", price: 999, category: "Decor", image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400" },
-            { id: 5, name: "Smart LED Bulb", price: 499, category: "Electronics", image: "https://images.unsplash.com/photo-1550985616-11610c812127?w=400" },
+            { id: 1, name: "Antique Brass Light", price: 2499, category: "Lighting", <!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApnaCart - Advanced E-Commerce Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-sm">
+        Item added to cart!
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-600 flex items-center gap-2">
+                <i class="fa-solid fa-store"></i> ApnaCart
+            </h1>
+            
+            <div class="hidden md:flex flex-1 max-w-md mx-8">
+                <input type="text" id="searchInput" placeholder="Brass lights, decor search karein..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <button onclick="toggleCart()" class="relative bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="hidden sm:inline">Cart</span>
+                <span id="cartCount" class="bg-red-500 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+            </button>
+        </div>
+        <!-- Mobile Search -->
+        <div class="px-4 pb-4 md:hidden">
+            <input type="text" id="mobileSearchInput" placeholder="Products search karein..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Controls Bar (Categories & Sorting) -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <!-- Categories -->
+            <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2">
+                <button onclick="filterCategory('All')" class="category-btn bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition">Sabhi</button>
+                <button onclick="filterCategory('Lighting')" class="category-btn bg-white text-gray-700 border px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-100 transition">Lighting</button>
+                <button onclick="filterCategory('Decor')" class="category-btn bg-white text-gray-700 border px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-100 transition">Home Decor</button>
+                <button onclick="filterCategory('Electronics')" class="category-btn bg-white text-gray-700 border px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-100 transition">Electronics</button>
+            </div>
+
+            <!-- Sorting -->
+            <div class="w-full md:w-auto flex justify-end">
+                <select id="sortSelect" onchange="sortProducts()" class="border px-4 py-2 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="default">Sort by: Default</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+    </main>
+
+    <!-- Slide-over Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex justify-end">
+        <div class="bg-white w-full max-w-md h-full flex flex-col p-6 shadow-xl">
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-indigo-600"></i> Aapka Cart</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-black text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="cartItems" class="flex-1 overflow-y-auto py-4 space-y-4"></div>
+
+            <div class="border-t pt-4 space-y-3">
+                <div class="flex justify-between text-lg font-bold">
+                    <span>Total:</span>
+                    <span id="cartTotal" class="text-indigo-600">₹0</span>
+                </div>
+                <button onclick="openCheckoutModal()" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> WhatsApp par Order Karein
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md rounded-xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-bold text-lg">Delivery Details Bhariye</h3>
+                <button onclick="closeCheckoutModal()" class="text-gray-500 hover:text-black"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Aapka Naam</label>
+                    <input type="text" id="custName" required class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="tel" id="custPhone" required class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Delivery Address</label>
+                    <textarea id="custAddress" rows="3" required class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">Order Confirm Karein</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Details Modal -->
+    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-lg rounded-xl overflow-hidden shadow-2xl relative">
+            <button onclick="closeProductModal()" class="absolute top-3 right-3 bg-white rounded-full p-2 shadow hover:bg-gray-100 z-10"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Antique Brass Light", price: 2499, category: "Lighting", image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600", desc: "Handcrafted antique brass finish lighting fixture, perfect for living rooms and premium interiors." },
+            { id: 2, name: "Modern Pendant Light", price: 1899, category: "Lighting", image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=600", desc: "Sleek and modern ceiling pendant light designed to elevate contemporary home aesthetics." },
+            { id: 3, name: "Brass Table Lamp", price: 3199, category: "Lighting", image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=600", desc: "Elegant solid brass table lamp providing warm ambient glow for office desks or bedside tables." },
+            { id: 4, name: "Decorative Wall Clock", price: 999, category: "Decor", image: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=600", desc: "Vintage-styled rustic wall clock crafted to add classic character to empty walls." },
+            { id: 5, name: "Smart LED Bulb", price: 499, category: "Electronics", image: "https://images.unsplash.com/photo-1550985616-11610c812127?w=600", desc: "Energy-efficient color changing smart bulb compatible with home voice assistants." },
         ];
 
         let cart = [];
+        let currentFilteredProducts = [...products];
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
 
         function renderProducts(items) {
             const grid = document.getElementById('productGrid');
+            if(items.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">Koi product nahi mila.</p>`;
+                return;
+            }
             grid.innerHTML = items.map(p => `
-                <div class="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
-                    <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <span class="text-xs text-indigo-600 font-semibold uppercase">${p.category}</span>
-                        <h3 class="font-bold text-lg text-gray-800 mt-1">${p.name}</h3>
-                        <p class="text-gray-600 font-medium mt-2">₹${p.price}</p>
-                        <button onclick="addToCart(${p.id})" class="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">Add to Cart</button>
+                <div class="bg-white border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover cursor-pointer" onclick="openProductModal(${p.id})">
+                        <div class="p-4">
+                            <span class="text-xs text-indigo-600 font-semibold uppercase">${p.category}</span>
+                            <h3 class="font-bold text-lg text-gray-800 mt-1 cursor-pointer hover:text-indigo-600" onclick="openProductModal(${p.id})">${p.name}</h3>
+                            <p class="text-indigo-600 font-bold text-lg mt-2">₹${p.price}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button onclick="addToCart(${p.id})" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                        </button>
                     </div>
                 </div>
             `).join('');
@@ -103,6 +246,7 @@
                 cart.push({ ...product, quantity: 1 });
             }
             updateCartUI();
+            showToast(`${product.name} cart mein joda gaya!`);
         }
 
         function updateQuantity(productId, change) {
@@ -125,7 +269,7 @@
             cartCount.innerText = totalCount;
 
             if (cart.length === 0) {
-                cartItems.innerHTML = `<p class="text-gray-500 text-center py-8">Aapka cart khali hai.</p>`;
+                cartItems.innerHTML = `<p class="text-gray-500 text-center py-12">Aapka cart khali hai.</p>`;
                 cartTotal.innerText = '₹0';
                 return;
             }
@@ -136,13 +280,13 @@
                 return `
                     <div class="flex justify-between items-center border-b pb-3">
                         <div>
-                            <h4 class="font-semibold text-sm">${item.name}</h4>
+                            <h4 class="font-semibold text-sm text-gray-800">${item.name}</h4>
                             <p class="text-xs text-gray-500">₹${item.price} x ${item.quantity}</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="updateQuantity(${item.id}, -1)" class="bg-gray-200 px-2 py-1 rounded text-sm">-</button>
-                            <span class="text-sm font-bold">${item.quantity}</span>
-                            <button onclick="updateQuantity(${item.id}, 1)" class="bg-gray-200 px-2 py-1 rounded text-sm">+</button>
+                            <button onclick="updateQuantity(${item.id}, -1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded text-sm font-bold">-</button>
+                            <span class="text-sm font-bold w-4 text-center">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded text-sm font-bold">+</button>
                         </div>
                     </div>
                 `;
@@ -152,38 +296,99 @@
         }
 
         function toggleCart() {
-            const drawer = document.getElementById('cartDrawer');
-            drawer.classList.toggle('hidden');
+            document.getElementById('cartDrawer').classList.toggle('hidden');
         }
 
         function filterCategory(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700', 'border');
+            });
+            event.target.classList.remove('bg-white', 'text-gray-700', 'border');
+            event.target.classList.add('bg-indigo-600', 'text-white');
+
             if (category === 'All') {
-                renderProducts(products);
+                currentFilteredProducts = [...products];
             } else {
-                renderProducts(products.filter(p => p.category === category));
+                currentFilteredProducts = products.filter(p => p.category === category);
             }
+            renderProducts(currentFilteredProducts);
         }
 
-        function checkout() {
+        function sortProducts() {
+            const sortBy = document.getElementById('sortSelect').value;
+            let sorted = [...currentFilteredProducts];
+            if (sortBy === 'low-high') {
+                sorted.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'high-low') {
+                sorted.sort((a, b) => b.price - a.price);
+            }
+            renderProducts(sorted);
+        }
+
+        function openProductModal(id) {
+            const p = products.find(item => item.id === id);
+            document.getElementById('modalContent').innerHTML = `
+                <img src="${p.image}" alt="${p.name}" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <span class="text-xs text-indigo-600 font-semibold uppercase">${p.category}</span>
+                    <h2 class="text-2xl font-bold text-gray-800 mt-1">${p.name}</h2>
+                    <p class="text-xl font-bold text-indigo-600 mt-2">₹${p.price}</p>
+                    <p class="text-gray-600 text-sm mt-3 leading-relaxed">${p.desc}</p>
+                    <button onclick="addToCart(${p.id}); closeProductModal();" class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition font-semibold">Add to Cart</button>
+                </div>
+            `;
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        function openCheckoutModal() {
             if (cart.length === 0) {
                 alert('Pehle cart mein kuch add karein!');
                 return;
             }
-            alert('Order Successfully Placed! Thank you for shopping with ApnaCart.');
+            toggleCart();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            let orderText = `*Naya Order Aaya Hai!*%0A%0A*Naam:* ${name}%0A*Phone:* ${phone}%0A*Pata:* ${address}%0A%0A*Products:*%0A`;
+            let total = 0;
+            cart.forEach(item => {
+                orderText += `- ${item.name} (${item.quantity}x) : ₹${item.price * item.quantity}%0A`;
+                total += item.price * item.quantity;
+            });
+            orderText += `%0A*Total Amount:* ₹${total}`;
+
+            // Aapka WhatsApp number set kar diya gaya hai
+            const whatsappNumber = "919126881207"; 
+            window.open(`https://wa.me/${whatsappNumber}?text=${orderText}`, '_blank');
+
             cart = [];
             updateCartUI();
-            toggleCart();
+            closeCheckoutModal();
         }
 
         // Search Handlers
-        document.getElementById('searchInput').addEventListener('input', (e) => {
+        function handleSearch(e) {
             const term = e.target.value.toLowerCase();
-            renderProducts(products.filter(p => p.name.toLowerCase().includes(term)));
-        });
-        document.getElementById('mobileSearchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            renderProducts(products.filter(p => p.name.toLowerCase().includes(term)));
-        });
+            const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(filtered);
+        }
+        document.getElementById('searchInput').addEventListener('input', handleSearch);
+        document.getElementById('mobileSearchInput').addEventListener('input', handleSearch);
 
         // Initial render
         renderProducts(products);
