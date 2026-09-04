@@ -689,21 +689,50 @@
 
   async function loadProducts() {
 
-    const container =
-      document.getElementById("products");
+  const container = document.getElementById("products");
+
+  try {
 
     container.innerHTML =
       '<div class="loading">Loading products... ⏳</div>';
 
-    const { data, error } =
-      await supabaseClient
-        .from("products")
-        .select("*")
-        .order("id", { ascending: false });
+    const { data, error } = await supabaseClient
+      .from("products")
+      .select("*")
+      .order("id", { ascending: false });
 
     if (error) {
+      throw error;
+    }
 
-  console.error("Supabase Error:", error);
+    console.log("Products received:", data);
+
+    products = data || [];
+
+    if (products.length === 0) {
+
+      container.innerHTML =
+        '<div class="empty">📦 Abhi koi product available nahi hai.</div>';
+
+      return;
+    }
+
+    displayProducts(products);
+
+  } catch (error) {
+
+    console.error("FULL ERROR:", error);
+
+    container.innerHTML = `
+      <div class="empty">
+        ❌ Error aaya!<br><br>
+        ${error.message || error}
+      </div>
+    `;
+
+  }
+
+  }
 
   container.innerHTML =
     `<div class="empty">
