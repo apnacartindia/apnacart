@@ -703,15 +703,16 @@
 
     if (error) {
 
-      console.log(error);
+  console.error("Supabase Error:", error);
 
-      container.innerHTML =
-        `<div class="empty">
-          ❌ Products load nahi hue.<br><br>
-          Check Supabase table & policy.
-        </div>`;
+  container.innerHTML =
+    `<div class="empty">
+      ❌ Products load nahi hue.<br><br>
+      <b>Error:</b> ${error.message}
+    </div>`;
 
-      return;
+  return;
+}
     }
 
     products = data || [];
